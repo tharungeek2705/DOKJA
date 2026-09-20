@@ -1,0 +1,13 @@
+ultralytics>=8.2.0
+torch>=2.0.0
+torchvision>=0.15.0
+opencv-python>=4.8.0
+easyocr>=1.7.0
+fastapi>=0.110.0
+uvicorn>=0.28.0
+pydantic>=2.5.0
+pyyaml>=6.0
+numpy>=1.24.0
+websockets>=12.0
+requests>=2.31.0
+python-multipart>=0.0.9

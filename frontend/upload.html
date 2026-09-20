@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOKJA | CCTV Video Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/upload-theme.css" />
+  <style>
+    body {
+      background: #f4f6f9;
+    }
+    .upload-shell {
+      width: min(1100px, calc(100vw - 40px));
+      margin: 32px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .upload-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      border-radius: 14px;
+    }
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--color-cyan);
+    }
+    .brand-mini .logo-dot {
+      width: 12px;
+      height: 12px;
+    }
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+    }
+    .upload-card, .result-card {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .upload-card-header, .result-card-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .upload-form {
+      padding: 20px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .input-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .input-label {
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .file-drop-zone {
+      border: 1px dashed var(--border-highlight);
+      border-radius: 12px;
+      background: rgba(0, 229, 255, 0.03);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      min-height: 170px;
+    }
+    input[type="file"] {
+      width: 100%;
+      background: rgba(8, 12, 20, 0.8);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    select {
+      width: 100%;
+      background: rgba(8, 12, 20, 0.8);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+    }
+    .primary-btn {
+      border: 1px solid var(--color-cyan);
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--color-cyan);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .secondary-btn {
+      border: 1px solid var(--border-color);
+      background: rgba(20, 31, 51, 0.8);
+      color: var(--text-primary);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .result-card-body {
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .mini-stat {
+      background: #f6f8fb;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .mini-stat-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .mini-stat-value {
+      margin-top: 8px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+    }
+    .plate-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+    .plate-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--border-color);
+    }
+    .plate-badge {
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--color-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+    .muted {
+      color: var(--text-muted);
+    }
+    .hidden {
+      display: none !important;
+    }
+    .preview-wrap { display: none; gap: 10px; flex-direction: column; }
+    .preview-wrap.visible { display: flex; }
+    #local-preview { width: 100%; max-height: 240px; border-radius: 10px; background: #111827; }
+    .evidence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .evidence-card { border: 1px solid var(--border-color); border-radius: 9px; overflow: hidden; background: #fff; }
+    .evidence-card img { display: block; width: 100%; height: 110px; object-fit: cover; background: #e9edf3; }
+    .evidence-meta { padding: 9px; font-size: 11px; line-height: 1.55; color: var(--text-secondary); }
+    .vehicle-type { color: var(--color-cyan); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; }
+    .frame-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .frame-gallery img { width: 100%; height: 80px; object-fit: cover; border: 1px solid var(--border-color); border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="upload-shell">
+    <div class="upload-topbar">
+      <div class="brand-mini">
+        <span class="logo-dot"></span>
+        <span>DOKJA · VIDEO INTELLIGENCE</span>
+      </div>
+      <div class="actions-cluster">
+        <button class="secondary-btn" onclick="window.location.href='/'">Dashboard</button>
+      </div>
+    </div>
+
+    <div class="upload-grid">
+      <section class="upload-card">
+        <div class="upload-card-header">CCTV video analysis</div>
+        <form id="upload-form" class="upload-form">
+          <div class="input-block">
+            <label class="input-label" for="upload-file">Video file</label>
+            <div class="file-drop-zone">
+              <div class="muted">Upload recorded CCTV footage for vehicle detection, classification, colour and ANPR.</div>
+              <input id="upload-file" name="file" type="file" accept="video/*" required />
+              <div class="preview-wrap" id="preview-wrap"><span class="input-label">Footage preview</span><video id="local-preview" controls muted></video></div>
+            </div>
+          </div>
+
+          <div class="input-block">
+            <label class="input-label" for="camera-id">Camera label</label>
+            <select id="camera-id" name="camera_id">
+              <option value="CAM-UPLOAD-01">CAM-UPLOAD-01</option>
+              <option value="CAM-UPLOAD-02">CAM-UPLOAD-02</option>
+              <option value="CAM-UPLOAD-03">CAM-UPLOAD-03</option>
+            </select>
+          </div>
+
+          <button class="primary-btn" type="submit">Run vehicle intelligence</button>
+        </form>
+      </section>
+
+      <aside class="result-card">
+        <div class="result-card-header">Vehicle evidence & plate results</div>
+        <div class="result-card-body">
+          <div class="summary-grid">
+            <div class="mini-stat">
+              <div class="mini-stat-label">Plates</div>
+              <div class="mini-stat-value" id="plates-count">0</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-label">Vehicles</div>
+              <div class="mini-stat-value" id="frames-count">0</div>
+            </div>
+            <div class="mini-stat">
+              <div class="mini-stat-label">Status</div>
+              <div class="mini-stat-value" id="upload-status">IDLE</div>
+            </div>
+          </div>
+
+          <div class="plate-list" id="plate-list">
+            <div class="muted">No video processed yet. Every analysed vehicle will be stored with its class, colour, confidence, evidence crop and plate result when readable.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('upload-form');
+    const plateList = document.getElementById('plate-list');
+    const platesCount = document.getElementById('plates-count');
+    const framesCount = document.getElementById('frames-count');
+    const uploadStatus = document.getElementById('upload-status');
+    const previewWrap = document.getElementById('preview-wrap');
+    const localPreview = document.getElementById('local-preview');
+
+    document.getElementById('upload-file').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      localPreview.src = URL.createObjectURL(file);
+      previewWrap.classList.add('visible');
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const fileInput = document.getElementById('upload-file');
+      const file = fileInput.files[0];
+      const cameraId = document.getElementById('camera-id').value;
+
+      if (!file) {
+        alert('Please choose a video file first.');
+        return;
+      }
+
+      uploadStatus.textContent = 'RUNNING';
+      plateList.innerHTML = '<div class="muted">Analysing footage: detecting vehicle type, drawing colour-coded evidence boxes, classifying colour and reading plates. Keep this page open until the review is ready.</div>';
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('camera_id', cameraId);
+
+      try {
+        const response = await fetch('/api/upload/video', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.detail || 'Upload failed');
+        }
+
+        const plates = payload.plates || [];
+        const vehicles = payload.vehicles || [];
+        platesCount.textContent = String(plates.length);
+        framesCount.textContent = String(payload.summary?.vehicle_detections || 0);
+        uploadStatus.textContent = 'DONE';
+
+        const classes = Object.entries(payload.summary?.vehicle_classes || {}).map(([name, count]) => `${count} ${name.replace('_', ' ')}`).join(' · ');
+        const gallery = (payload.annotated_frames || []).length ? `<div class="frame-gallery">${payload.annotated_frames.map(url => `<img src="${url}" alt="Colour-coded vehicle detection frame">`).join('')}</div>` : '';
+        // Older completed uploads may only contain plates.  Never hide those
+        // results: turn each plate response into a displayable evidence card.
+        const displayRecords = vehicles.length ? vehicles : plates.map(plate => ({
+          vehicle_type: 'vehicle', vehicle_color: plate.vehicle_color,
+          plate_text: plate.plate_text, plate_confidence: plate.plate_confidence,
+          confidence: plate.plate_confidence, vehicle_crop_url: plate.vehicle_crop_url,
+          plate_crop_url: plate.plate_crop_url
+        }));
+        const cards = displayRecords.length ? `<div class="evidence-grid">${displayRecords.map(vehicle => `<article class="evidence-card">${vehicle.vehicle_crop_url ? `<img src="${vehicle.vehicle_crop_url}" alt="${vehicle.vehicle_type} evidence">` : ''}<div class="evidence-meta"><div class="vehicle-type">${vehicle.vehicle_type.replace('_', ' ')}</div><div><b>Colour:</b> ${vehicle.vehicle_color || 'unknown'} · ${(vehicle.confidence * 100).toFixed(0)}% detection</div><div>${vehicle.plate_text ? `<b>Plate:</b> <span class="plate-badge">${vehicle.plate_text}</span> ${(vehicle.plate_confidence * 100).toFixed(0)}%` : 'Plate: unreadable'}</div></div></article>`).join('')}</div>` : '<div class="muted">No vehicles were found in the sampled frames.</div>';
+        const plateSummary = plates.length ? `<div class="muted"><b>Detected number plates:</b> ${plates.map(plate => `<span class="plate-badge">${plate.plate_text}</span> <span>${plate.vehicle_color || 'unknown'}</span>`).join(' · ')}</div>` : '<div class="muted">No plate could be read with enough confidence from this footage.</div>';
+        plateList.innerHTML = `${plateSummary}<div class="muted"><b>${displayRecords.length}</b> vehicle records shown · ${classes || 'No classifications returned'}. Search these later from the Dashboard using plate, colour or vehicle type.</div>${gallery}${cards}`;
+      } catch (error) {
+        uploadStatus.textContent = 'ERROR';
+        plateList.innerHTML = `<div class="muted">${error.message}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>

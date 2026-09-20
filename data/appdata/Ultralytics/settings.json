@@ -1,0 +1,19 @@
+{
+  "settings_version": "0.0.8",
+  "datasets_dir": "D:\\Projects\\dokja\\datasets",
+  "weights_dir": "weights",
+  "runs_dir": "runs",
+  "uuid": "0381173902225680d30bfa243907e78349f9f042cfdd9cc118453d663998d16c",
+  "sync": true,
+  "api_key": "",
+  "openai_api_key": "",
+  "clearml": true,
+  "comet": true,
+  "dvc": true,
+  "mlflow": true,
+  "raytune": true,
+  "tensorboard": false,
+  "wandb": false,
+  "vscode_msg": true,
+  "openvino_msg": true
+}

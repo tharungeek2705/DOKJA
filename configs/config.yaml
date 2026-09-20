@@ -1,0 +1,67 @@
+# DOKJA Configuration File
+
+app:
+  name: "DOKJA Vehicle Intelligence Platform"
+  version: "0.1.0-alpha"
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+
+vision:
+  model_name: "yolov8n.pt"  # Pretrained YOLOv8 nano for fast inference
+  device: "auto"           # "cuda", "cpu", or "auto"
+  confidence_threshold: 0.35
+  iou_threshold: 0.45
+  target_classes:
+    - 1   # bicycle / two wheeler
+    - 2   # car
+    - 3   # motorcycle
+    - 5   # bus
+    - 7   # truck
+  class_names:
+    2: "car"
+    3: "two_wheeler"
+    5: "bus"
+    7: "truck"
+
+tracking:
+  tracker_type: "bytetrack"
+  track_high_thresh: 0.4
+  track_low_thresh: 0.1
+  new_track_thresh: 0.5
+  track_buffer: 30
+  match_thresh: 0.8
+  max_trajectory_points: 50
+
+cameras:
+  - id: "CAM-01"
+    name: "Anna Salai Junction North"
+    location: "Chennai Central Sector"
+    latitude: 13.0827
+    longitude: 80.2707
+    source: "synthetic"  # or path/to/video.mp4, 0, or rtsp://...
+    source_type: "synthetic"  # synthetic, video, rtsp, webcam
+    fps: 25
+    resolution: [1280, 720]
+  - id: "CAM-02"
+    name: "OMR IT Expressway Hub"
+    location: "Tidel Park Crossing"
+    latitude: 12.9892
+    longitude: 80.2483
+    source: "synthetic"
+    source_type: "synthetic"
+    fps: 25
+    resolution: [1280, 720]
+  - id: "CAM-03"
+    name: "Marina Coastal Highway"
+    location: "Santhome Way"
+    latitude: 13.0336
+    longitude: 80.2785
+    source: "synthetic"
+    source_type: "synthetic"
+    fps: 25
+    resolution: [1280, 720]
+
+analytics:
+  density_window_seconds: 60
+  flow_calculation_interval: 5
